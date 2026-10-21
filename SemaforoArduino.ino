@@ -1,66 +1,141 @@
-int verme1 = 13;
-int verme2 = 5;
-int amar1 = 12;
-int amar2 = 6;
-int verd1 = 11;
-int verd2 = 7;
 
-//criacao das variaveis
+// const: define valores que não devem ser alterados.
+const int verme1 = 13;
+const int verme2 = 5;
+
+const int amar1 = 12;
+const int amar2 = 6;
+
+const int verd1 = 11;
+const int verd2 = 7;
+
 void setup()
-
 {
-//classificando as saídas
-pinMode(verme1,OUTPUT);
-pinMode(amar1,OUTPUT);
-pinMode(verd1,OUTPUT);
-pinMode(verme2,OUTPUT);
-pinMode(amar2,OUTPUT);
-pinMode(verd2,OUTPUT);
+    // Configura os pinos como saídas.
+    pinMode(verme1, OUTPUT);
+    pinMode(amar1, OUTPUT);
+    pinMode(verd1, OUTPUT);
 
+    pinMode(verme2, OUTPUT);
+    pinMode(amar2, OUTPUT);
+    pinMode(verd2, OUTPUT);
+
+    // Inicializa todos os LEDs desligados.
+    digitalWrite(verme1, LOW);
+    digitalWrite(amar1, LOW);
+    digitalWrite(verd1, LOW);
+
+    digitalWrite(verme2, LOW);
+    digitalWrite(amar2, LOW);
+    digitalWrite(verd2, LOW);
 }
+
+
+
+// 3. SEMÁFORO 2 VERDE E SEMÁFORO 1 VERMELHO
+
+void semafaroVerde2Vermelho1()
+{
+    // Semáforo 1: vermelho ligado.
+    digitalWrite(verme1, HIGH);
+    digitalWrite(amar1, LOW);
+    digitalWrite(verd1, LOW);
+
+    // Semáforo 2: verde ligado.
+    digitalWrite(verme2, LOW);
+    digitalWrite(amar2, LOW);
+    digitalWrite(verd2, HIGH);
+
+    delay(5000);
+}
+
+
+
+// 4. SEMÁFORO 2 AMARELO
+
+
+void semafaroAmarelo2()
+{
+    // Semáforo 2: verde desligado e amarelo ligado.
+    digitalWrite(verd2, LOW);
+    digitalWrite(amar2, HIGH);
+
+    delay(2000);
+}
+
+
+
+// 5. AMBOS OS SEMÁFOROS VERMELHOS
+
+void ambosVermelhos()
+{
+    // Semáforo 1: vermelho ligado.
+    digitalWrite(verme1, HIGH);
+    digitalWrite(amar1, LOW);
+    digitalWrite(verd1, LOW);
+
+    // Semáforo 2: vermelho ligado.
+    digitalWrite(verme2, HIGH);
+    digitalWrite(amar2, LOW);
+    digitalWrite(verd2, LOW);
+
+    delay(1000);
+}
+
+
+
+// 6. SEMÁFORO 2 VERMELHO E SEMÁFORO 1 VERDE
+
+void semafaroVermelho2Verde1()
+{
+    // Semáforo 2: vermelho ligado.
+    digitalWrite(verme2, HIGH);
+    digitalWrite(amar2, LOW);
+    digitalWrite(verd2, LOW);
+
+    // Semáforo 1: verde ligado.
+    digitalWrite(verme1, LOW);
+    digitalWrite(amar1, LOW);
+    digitalWrite(verd1, HIGH);
+
+    delay(5000);
+}
+
+
+
+// 7. SEMÁFORO 1 AMARELO
+
+void semafaroAmarelo1()
+{
+    // Semáforo 1: verde desligado e amarelo ligado.
+    digitalWrite(verd1, LOW);
+    digitalWrite(amar1, HIGH);
+
+    delay(2000);
+}
+
+
+
+// 8. CICLO PRINCIPAL
+
 
 void loop()
 {
-digitalWrite(verme1,HIGH);//vermelho1 ligado
-digitalWrite(amar1,LOW); //amarelo1 desligado
-digitalWrite(verd1,LOW);//verde1 desligado
+    // Primeira via liberada.
+    semafaroVerde2Vermelho1();
 
-digitalWrite(verd2,HIGH);//verde2 ligado
-digitalWrite(amar2,LOW);// amarelo2 desligado
-digitalWrite(verme2,LOW);//verde2 desligado
+    // Preparação para fechar a primeira via.
+    semafaroAmarelo2();
 
-delay(5000);
+    // Intervalo de segurança didático.
+    ambosVermelhos();
 
-digitalWrite(verd2,LOW);//verde2 desliga
-digitalWrite(amar2,HIGH);//amarelo2 Ligado
+    // Segunda via liberada.
+    semafaroVermelho2Verde1();
 
-delay(2000);
+    // Preparação para fechar a segunda via.
+    semafaroAmarelo1();
 
-digitalWrite(amar2,LOW);//amarelo2 desligado
-digitalWrite(verme2,HIGH);//vermelho2 ligado
-digitalWrite(verme1,LOW);//vermelho1 desligado
-digitalWrite(verd1,HIGH);//verde1 ligado
-delay(5000);
-
-digitalWrite(verme2,HIGH);//vermelho2 ligado
-digitalWrite(amar2,LOW); //amarelo2 desligado
-digitalWrite(verd2,LOW);//verde2 desligado
-
-digitalWrite(verd1,HIGH);//verde1 ligado
-digitalWrite(amar1,LOW);// amarelo1 desligado
-digitalWrite(verme1,LOW);//verde1 desligado
-
-delay(5000);
-
-digitalWrite(verd1,LOW);//verde1 desliga
-digitalWrite(amar1,HIGH);//amarelo1 Ligado
-
-delay(2000);
-
-digitalWrite(amar1,LOW);//amarelo1 desligado
-digitalWrite(verme1,HIGH);//vermelho1 ligado
-digitalWrite(verme2,LOW);//vermelho2 desligado
-digitalWrite(verd2,HIGH);//verde2 ligado
-delay(5000);
-
+    // Intervalo de segurança didático.
+    ambosVermelhos();
 }
