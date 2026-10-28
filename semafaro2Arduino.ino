@@ -11,7 +11,7 @@ const byte LED_AMARELO  = 0b00000010; // P1
 const byte LED_VERDE    = 0b00000100; // P2
 const byte LED_VERMELHO2 = 0b00001000; // P4
 const byte LED_AMARELO2  = 0b00100000; // P5
-const byte LED_VERDE2    = 0b00100000; // P6
+const byte LED_VERDE2    = 0b001000000; // P6
 
 // Função auxiliar para enviar o comando ao PCF8574
 // para que o arduino execute essa função é preciso fazelo entendero que estamos querendo dizer
