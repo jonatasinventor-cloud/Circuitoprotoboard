@@ -31,3 +31,30 @@ void enviarParaPCF(byte estado) {
   //mandamos para tal porta um sinal de byte(o ~ inverte o sinal), o fazebdo sair de nivel logico 0
   Wire.endTransmission();          // 3. Encerra a conversa
 }
+void setup() {
+  Wire.begin(); // Inicializa o barramento I2C
+  enviarParaPCF(TUDO_DESLIGADO); // Garante que tudo comece apagado
+  // todo o sistema começara sem sinal nenhum em byte
+}
+
+void loop() {
+  // 1. Estado VERDE E VERMELHO
+  enviarParaPCF(LED_VERDE1|LED_VERMELHO2);
+  delay(5000); // Fica verde e vermelho por 5 segundos
+
+  // 2. Estado AMARELO
+  enviarParaPCF(LED_AMARELO1|LED_VERMELHO2);
+
+  delay(3000); // Fica amarelo por 3 segundos
+
+  // 3. Estado VERMELHO
+  enviarParaPCF(LED_VERMELHO1|LED_VERDE2);
+
+  delay(5000); // Fica vermelho por 5 segundos
+  
+   // 4. Estado AMARELO
+  enviarParaPCF(LED_VERMELHO1|LED_AMARELO2);
+
+  delay(3000); // Fica amarelo por 3 segundos
+
+}
