@@ -25,54 +25,73 @@ const byte LED_VERDE2 = 0b10000000; // P7
 
 // Mapeamento dos pinos do Semáforo no segundo PCF8574, uma especié de nomeação dos pinos
 // os bytes representão quais portas serão ativadas
-// Semáfaro 1
+// Semáfaro 3
 const byte LED_VERMELHO3 = 0b00000001; // P0
 const byte LED_AMARELO3  = 0b00000010; // P1
 const byte LED_VERDE3    = 0b00000100; // P2
 
-//Semáfaro pedestre 1
+//Semáfaro pedestre 2
 const byte LED_VERMELHO_PED2    = 0b00001000; // P3
 const byte LED_VERDE_PED2    = 0b00010000; // P4
 
-//Semáfaro 2
+//Semáfaro 4
 const byte LED_VERMELHO4    = 0b00100000; // P5
 const byte LED_AMARELO4  = 0b01000000; // P6
 const byte LED_VERDE4 = 0b10000000; // P7
 
 // Função auxiliar para enviar o comando ao PCF8574
-// para que o arduino execute essa função é preciso fazelo entendero que estamos querendo dizer
+// para que o arduino execute essa função é preciso fazelo entender que estamos querendo dizer
+// agora esssa função envia no determinado endereço o byte que precisamos
 
-void enviarParaPCF(byte estado) {
-  Wire.beginTransmission(PCF0_ADDR|PCF1_ADDR); // 1. Inicia conversa com o CI
-  //chamamos o CI que queremos conversar
+void enviarParaPCF(byte endereco, byte estado) {
+  //agora que existem dois I2C, precisamos especificar qual deles queremos enviar o comando, por isso o parametro endereco
+  Wire.beginTransmission(endereco); // 1. Inicia conversa com o CI
+  //chamamos o respectivo CI que queremos conversar
   Wire.write(~estado);              // 2. Envia a combinação de LEDs
   //mandamos para tal porta um sinal de byte(o ~ inverte o sinal), o fazebdo sair de nivel logico 0
   Wire.endTransmission();          // 3. Encerra a conversa
 }
 void setup() {
   Wire.begin(); // Inicializa o barramento I2C
-  enviarParaPCF(TUDO_DESLIGADO); // Garante que tudo comece apagado
+  enviarParaPCF(PCF0_ADDR, TUDO_DESLIGADO); // Garante que o primeiro I2C comece com todos os LEDs desligados
+  enviarParaPCF(PCF1_ADDR, TUDO_DESLIGADO); // Garante que o segundo I2C comece com todos os LEDs desligados
   // todo o sistema começara sem sinal nenhum em byte
 }
 
 void loop() {
   // 1. Estado VERDE1 E VERMELHO2 E VERDE_PED1
-
-  enviarParaPCF(LED_VERDE1|LED_VERMELHO2|LED_VERDE_PED1);
+  enviarParaPCF(PCF0_ADDR,
+    LED_VERDE1|LED_VERMELHO2|LED_VERDE_PED1);
+   // 1a. Estado VERDE3 E VERMELHO4 E VERDE_PED2
+  enviarParaPCF(PCF1_ADDR,
+    LED_VERDE3|LED_VERMELHO4|LED_VERDE_PED2);
+    
   delay(5000); // Fica verde e vermelho por 5 segundos
 
-  // 2. Estado AMARELO
-  enviarParaPCF(LED_AMARELO1|LED_VERMELHO2|LED_VERDE_PED1);
+  // 2. Estado AMARELO1 aciona e VERDE1 desliga, VERMELHO2 e VERDE_PED1 permanecem acesos
+  enviarParaPCF(PCF0_ADDR,
+    LED_AMARELO1|LED_VERMELHO2|LED_VERDE_PED1);
+   // 2a. Estado AMARELO3 aciona e VERDE3 desliga, VERMELHO4 e VERDE_PED2 permanecem acesos
+  enviarParaPCF(PCF1_ADDR,
+    LED_AMARELO3|LED_VERMELHO4|LED_VERDE_PED2);
 
   delay(3000); // Fica amarelo por 3 segundos
 
-  // 3. Estado VERMELHO
-  enviarParaPCF(LED_VERMELHO1|LED_VERDE2|LED_VERMELHO_PED1);
+  // 3. Estado VERMELHO1, VERDE2 e VERMELHO_PED1 acionam e AMARELO1, VERMELHO2 e VERDE_PED1 desligam
+  enviarParaPCF(PCF0_ADDR,
+      LED_VERMELHO1|LED_VERDE2|LED_VERMELHO_PED1);
+   // 3a. Estado VERMELHO3, VERDE4 e VERMELHO_PED2 acionam e AMARELO3, VERMELHO4 e VERDE_PED2 desligam
+  enviarParaPCF(PCF1_ADDR,
+      LED_VERMELHO3|LED_VERDE4|LED_VERMELHO_PED2);
 
   delay(5000); // Fica vermelho por 5 segundos
   
-   // 4. Estado AMARELO
-  enviarParaPCF(LED_VERMELHO1|LED_AMARELO2|LED_VERMELHO_PED1);
+   // 4. Estado AMARELO2 aciona e VERDE2 desliga, VERMELHO1 e VERMELHO_PED1 permanecem acesos
+  enviarParaPCF(PCF0_ADDR,
+    LED_VERMELHO1|LED_AMARELO2|LED_VERMELHO_PED1);
+   // 4a. Estado AMARELO4 aciona e VERDE4 desliga, VERMELHO3 e VERMELHO_PED2 permanecem acesos 
+  enviarParaPCF(PCF1_ADDR,
+    LED_VERMELHO3|LED_AMARELO4|LED_VERMELHO_PED2);
 
   delay(3000); // Fica amarelo por 3 segundos
 
